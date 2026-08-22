@@ -4,6 +4,7 @@ import "./index.css";
 import HUD from "./components/ui/Hud";
 
 function App() {
+  let a = 15;
   return (
     <div className="game-container">
       <Game />
