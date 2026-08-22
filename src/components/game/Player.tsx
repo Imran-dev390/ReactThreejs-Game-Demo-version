@@ -248,57 +248,63 @@ export default function Player() {
       </mesh>
 
       {/* Weapon */}
-      <group
-        position={[
-          0.55,
-          0.25,
-          -0.45,
-        ]}
-        rotation={[
-          -0.1,
-          0,
-          -0.15,
-        ]}
-      >
-        <mesh castShadow>
-          <boxGeometry
-            args={[0.16, 0.16, 1.5]}
-          />
+     {/* Weapon */}
+<group
+  position={[0.55, 0.25, -0.45]}
+  rotation={[-0.1, 0, -0.15]}
+>
+  {/* Main gun body */}
+  <mesh castShadow>
+    <boxGeometry args={[0.16, 0.16, 1.5]} />
+    <meshStandardMaterial
+      color="#05070b"
+      metalness={1}
+      roughness={0.15}
+    />
+  </mesh>
 
-          <meshStandardMaterial
-            color="#05070b"
-            metalness={1}
-            roughness={0.15}
-          />
-        </mesh>
+  {/* Barrel */}
+  <mesh
+    position={[0, 0, -0.85]}
+    rotation={[Math.PI / 2, 0, 0]}
+    castShadow
+  >
+    <cylinderGeometry
+      args={[0.055, 0.055, 0.4, 12]}
+    />
+    <meshStandardMaterial
+      color="#111111"
+      metalness={1}
+      roughness={0.15}
+    />
+  </mesh>
 
-        {/* Barrel */}
-        {/* <mesh
-          position={[0, 0, -0.85]}
-        >
-          <cylinderGeometry
-            args={[
-              0.055,
-              0.055,
-              0.4,
-              12,
-            ]}
-            rotation={[
-              Math.PI / 2,
-              0,
-              0,
-            ]}
-          />
+  {/* Grip */}
+  <mesh
+    position={[0, -0.25, 0.25]}
+    rotation={[-0.3, 0, 0]}
+    castShadow
+  >
+    <boxGeometry args={[0.13, 0.45, 0.18]} />
+    <meshStandardMaterial
+      color="#090b10"
+      metalness={0.8}
+      roughness={0.25}
+    />
+  </mesh>
 
-          <meshStandardMaterial
-            color="#111111"
-            metalness={1}
-          />
-        </mesh> */}
-        <mesh rotation={[Math.PI / 2, 0, 0]}>
-    <cylinderGeometry args={[1, 1, 2, 32]} />
-</mesh>
-      </group>
+  {/* Energy/core detail */}
+  <mesh position={[0, 0, -0.15]}>
+    <boxGeometry args={[0.19, 0.19, 0.35]} />
+    <meshStandardMaterial
+      color="#00aacc"
+      emissive="#00eaff"
+      emissiveIntensity={2}
+      metalness={0.8}
+      roughness={0.2}
+    />
+  </mesh>
+</group>
 
       {/* Player glow */}
       <pointLight
