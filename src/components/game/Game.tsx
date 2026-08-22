@@ -1,10 +1,17 @@
 import { Canvas } from "@react-three/fiber";
-//import { PerspectiveCamera } from "@react-three/drei";
 
 import Player from "./Player";
 import CityMap from "./CityMap";
 
-export default function Game() {
+type GameProps = {
+  health: number;
+  setHealth: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function Game({
+  health,
+  setHealth,
+}: GameProps) {
   return (
     <Canvas
       shadows
@@ -15,16 +22,13 @@ export default function Game() {
         far: 200,
       }}
     >
-      {/* Background */}
       <color attach="background" args={["#050812"]} />
 
-      {/* Fog */}
       <fog
         attach="fog"
         args={["#050812", 25, 100]}
       />
 
-      {/* Lighting */}
       <ambientLight intensity={1} />
 
       <directionalLight
@@ -39,11 +43,12 @@ export default function Game() {
         color="#00aaff"
       />
 
-      {/* Map */}
       <CityMap />
 
-      {/* Player */}
-      <Player />
+      <Player
+        health={health}
+        setHealth={setHealth}
+      />
     </Canvas>
   );
 }

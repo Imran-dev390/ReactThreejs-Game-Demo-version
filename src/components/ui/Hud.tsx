@@ -1,12 +1,14 @@
-export default function HUD() {
+type HUDProps = {
+  health: number;
+};
+
+export default function HUD({ health }: HUDProps) {
   return (
     <div className="hud">
 
       <div className="mission">
         <small>MISSION 01</small>
-
         <strong>INFILTRATION</strong>
-
         <p>Reach the enemy compound</p>
       </div>
 
@@ -20,9 +22,7 @@ export default function HUD() {
       <div className="weapon">
         <div>
           <small>VX-45</small>
-
           <strong>30</strong>
-
           <span> / 120</span>
         </div>
 
@@ -37,10 +37,20 @@ export default function HUD() {
         </div>
 
         <div className="health-bar">
-          <div />
+          <div
+            style={{
+              width: `${health}%`,
+              background:
+                health > 50
+                  ? "#00ff88"
+                  : health > 25
+                  ? "#ffaa00"
+                  : "#ff2222",
+            }}
+          />
         </div>
 
-        <strong>100</strong>
+        <strong>{health}</strong>
       </div>
 
       <div className="controls">
