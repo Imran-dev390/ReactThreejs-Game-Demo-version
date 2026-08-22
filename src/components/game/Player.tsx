@@ -2,7 +2,15 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export default function Player() {
+type PlayerProps = {
+  health: number;
+  setHealth: React.Dispatch<React.SetStateAction<number>>;
+};
+
+export default function Player({
+  health,
+  setHealth,
+}: PlayerProps) {
   const playerRef = useRef<THREE.Group>(null);
 
   const cameraTarget = useRef(
@@ -12,7 +20,6 @@ export default function Player() {
   const keys = useRef<Record<string, boolean>>({});
 
   const { camera } = useThree();
-
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       keys.current[event.key.toLowerCase()] = true;

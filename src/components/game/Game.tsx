@@ -22,13 +22,19 @@ export default function Game({
         far: 200,
       }}
     >
-      <color attach="background" args={["#050812"]} />
+      {/* Background */}
+      <color
+        attach="background"
+        args={["#050812"]}
+      />
 
+      {/* Fog */}
       <fog
         attach="fog"
         args={["#050812", 25, 100]}
       />
 
+      {/* Lighting */}
       <ambientLight intensity={1} />
 
       <directionalLight
@@ -43,8 +49,10 @@ export default function Game({
         color="#00aaff"
       />
 
+      {/* Map */}
       <CityMap />
 
+      {/* Player */}
       <Player
         health={health}
         setHealth={setHealth}
