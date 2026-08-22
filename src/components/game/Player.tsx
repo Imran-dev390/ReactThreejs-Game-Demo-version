@@ -17,16 +17,65 @@ export default function Player({
     new THREE.Vector3()
   );
 
-  const keys = useRef<Record<string, boolean>>({});
+  const keys = useRef<Record<string, boolean>>(
+    {}
+  );
 
   const { camera } = useThree();
+
+  /*
+   * TEST DAMAGE
+   *
+   * Press H to take 10 damage.
+   * This proves that the health system
+   * is connected correctly.
+   */
   useEffect(() => {
-    const handleKeyDown = (event: KeyboardEvent) => {
-      keys.current[event.key.toLowerCase()] = true;
+    const handleDamage = (event: KeyboardEvent) => {
+      if (
+        event.key.toLowerCase() === "h"
+      ) {
+        setHealth((currentHealth) =>
+          Math.max(
+            0,
+            currentHealth - 10
+          )
+        );
+      }
     };
 
-    const handleKeyUp = (event: KeyboardEvent) => {
-      keys.current[event.key.toLowerCase()] = false;
+    window.addEventListener(
+      "keydown",
+      handleDamage
+    );
+
+    return () => {
+      window.removeEventListener(
+        "keydown",
+        handleDamage
+      );
+    };
+  }, [setHealth]);
+
+  /*
+   * Keyboard controls
+   */
+
+  useEffect(() => {
+    const handleKeyDown = (
+      event: KeyboardEvent
+    ) => {
+      keys.current[
+        event.key.toLowerCase()
+      ] = true;
+    };
+
+    const handleKeyUp = (
+      event: KeyboardEvent
+    ) => {
+      keys.current[
+        event.key.toLowerCase()
+      ] = false;
     };
 
     window.addEventListener(
@@ -52,12 +101,25 @@ export default function Player({
     };
   }, []);
 
+  /*
+   * Player movement + camera
+   */
+
   useFrame((_, delta) => {
     if (!playerRef.current) return;
 
-    const player = playerRef.current;
+    const player =
+      playerRef.current;
 
-    const direction = new THREE.Vector3();
+    /*
+     * If dead, stop movement
+     */
+    if (health <= 0) {
+      return;
+    }
+
+    const direction =
+      new THREE.Vector3();
 
     if (keys.current["w"]) {
       direction.z -= 1;
@@ -84,29 +146,42 @@ export default function Player({
       const sprinting =
         keys.current["shift"];
 
-      const speed = sprinting ? 9 : 5;
+      const speed =
+        sprinting ? 9 : 5;
 
       player.position.x +=
-        direction.x * speed * delta;
+        direction.x *
+        speed *
+        delta;
 
       player.position.z +=
-        direction.z * speed * delta;
+        direction.z *
+        speed *
+        delta;
 
-      // Rotate character toward movement
+      /*
+       * Rotate character
+       * toward movement
+       */
+
       const targetRotation =
         Math.atan2(
           direction.x,
           direction.z
         );
 
-      player.rotation.y = THREE.MathUtils.lerp(
-        player.rotation.y,
-        targetRotation,
-        0.15
-      );
+      player.rotation.y =
+        THREE.MathUtils.lerp(
+          player.rotation.y,
+          targetRotation,
+          0.15
+        );
     }
 
-    // Map boundaries
+    /*
+     * Map boundaries
+     */
+
     player.position.x =
       THREE.MathUtils.clamp(
         player.position.x,
@@ -173,7 +248,12 @@ export default function Player({
       {/* Body */}
       <mesh castShadow>
         <capsuleGeometry
-          args={[0.45, 1.1, 8, 16]}
+          args={[
+            0.45,
+            1.1,
+            8,
+            16,
+          ]}
         />
 
         <meshStandardMaterial
@@ -185,11 +265,19 @@ export default function Player({
 
       {/* Chest armor */}
       <mesh
-        position={[0, 0.2, -0.35]}
+        position={[
+          0,
+          0.2,
+          -0.35,
+        ]}
         castShadow
       >
         <boxGeometry
-          args={[0.7, 0.8, 0.25]}
+          args={[
+            0.7,
+            0.8,
+            0.25,
+          ]}
         />
 
         <meshStandardMaterial
@@ -201,11 +289,19 @@ export default function Player({
 
       {/* Head */}
       <mesh
-        position={[0, 1.15, 0]}
+        position={[
+          0,
+          1.15,
+          0,
+        ]}
         castShadow
       >
         <sphereGeometry
-          args={[0.32, 24, 24]}
+          args={[
+            0.32,
+            24,
+            24,
+          ]}
         />
 
         <meshStandardMaterial
@@ -217,7 +313,11 @@ export default function Player({
 
       {/* Helmet */}
       <mesh
-        position={[0, 1.35, 0]}
+        position={[
+          0,
+          1.35,
+          0,
+        ]}
         castShadow
       >
         <sphereGeometry
@@ -241,10 +341,18 @@ export default function Player({
 
       {/* Visor */}
       <mesh
-        position={[0, 1.18, -0.28]}
+        position={[
+          0,
+          1.18,
+          -0.28,
+        ]}
       >
         <boxGeometry
-          args={[0.45, 0.16, 0.04]}
+          args={[
+            0.45,
+            0.16,
+            0.04,
+          ]}
         />
 
         <meshStandardMaterial
@@ -255,63 +363,119 @@ export default function Player({
       </mesh>
 
       {/* Weapon */}
-     {/* Weapon */}
-<group
-  position={[0.55, 0.25, -0.45]}
-  rotation={[-0.1, 0, -0.15]}
->
-  {/* Main gun body */}
-  <mesh castShadow>
-    <boxGeometry args={[0.16, 0.16, 1.5]} />
-    <meshStandardMaterial
-      color="#05070b"
-      metalness={1}
-      roughness={0.15}
-    />
-  </mesh>
+      <group
+        position={[
+          0.55,
+          0.25,
+          -0.45,
+        ]}
+        rotation={[
+          -0.1,
+          0,
+          -0.15,
+        ]}
+      >
+        {/* Main gun body */}
+        <mesh castShadow>
+          <boxGeometry
+            args={[
+              0.16,
+              0.16,
+              1.5,
+            ]}
+          />
 
-  {/* Barrel */}
-  <mesh
-    position={[0, 0, -0.85]}
-    rotation={[Math.PI / 2, 0, 0]}
-    castShadow
-  >
-    <cylinderGeometry
-      args={[0.055, 0.055, 0.4, 12]}
-    />
-    <meshStandardMaterial
-      color="#111111"
-      metalness={1}
-      roughness={0.15}
-    />
-  </mesh>
+          <meshStandardMaterial
+            color="#05070b"
+            metalness={1}
+            roughness={0.15}
+          />
+        </mesh>
 
-  {/* Grip */}
-  <mesh
-    position={[0, -0.25, 0.25]}
-    rotation={[-0.3, 0, 0]}
-    castShadow
-  >
-    <boxGeometry args={[0.13, 0.45, 0.18]} />
-    <meshStandardMaterial
-      color="#090b10"
-      metalness={0.8}
-      roughness={0.25}
-    />
-  </mesh>
+        {/* Barrel */}
+        <mesh
+          position={[
+            0,
+            0,
+            -0.85,
+          ]}
+          rotation={[
+            Math.PI / 2,
+            0,
+            0,
+          ]}
+          castShadow
+        >
+          <cylinderGeometry
+            args={[
+              0.055,
+              0.055,
+              0.4,
+              12,
+            ]}
+          />
 
-  {/* Energy/core detail */}
-  <mesh position={[0, 0, -0.15]}>
-    <boxGeometry args={[0.19, 0.19, 0.35]} />
-    <meshStandardMaterial
-      color="#00aacc"
-      emissive="#00eaff"
-      emissiveIntensity={2}
-      metalness={0.8}
-      roughness={0.2}
-    />
-  </mesh>
-</group>
+          <meshStandardMaterial
+            color="#111111"
+            metalness={1}
+            roughness={0.15}
+          />
+        </mesh>
+
+        {/* Grip */}
+        <mesh
+          position={[
+            0,
+            -0.25,
+            0.25,
+          ]}
+          rotation={[
+            -0.3,
+            0,
+            0,
+          ]}
+          castShadow
+        >
+          <boxGeometry
+            args={[
+              0.13,
+              0.45,
+              0.18,
+            ]}
+          />
+
+          <meshStandardMaterial
+            color="#090b10"
+            metalness={0.8}
+            roughness={0.25}
+          />
+        </mesh>
+
+        {/* Energy core */}
+        <mesh
+          position={[
+            0,
+            0,
+            -0.15,
+          ]}
+        >
+          <boxGeometry
+            args={[
+              0.19,
+              0.19,
+              0.35,
+            ]}
+          />
+
+          <meshStandardMaterial
+            color="#00aacc"
+            emissive="#00eaff"
+            emissiveIntensity={2}
+            metalness={0.8}
+            roughness={0.2}
+          />
+        </mesh>
+      </group>
 
       {/* Player glow */}
       <pointLight

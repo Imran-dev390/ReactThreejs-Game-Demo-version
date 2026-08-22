@@ -8,7 +8,11 @@ export default function App() {
 
   return (
     <div className="game-container">
-      <Game health={health} setHealth={setHealth} />
+      <Game
+        health={health}
+        setHealth={setHealth}
+      />
+
       <HUD health={health} />
     </div>
   );

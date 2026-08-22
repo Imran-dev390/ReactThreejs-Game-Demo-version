@@ -2,14 +2,22 @@ type HUDProps = {
   health: number;
 };
 
-export default function HUD({ health }: HUDProps) {
+export default function HUD({
+  health,
+}: HUDProps) {
   return (
     <div className="hud">
 
       <div className="mission">
         <small>MISSION 01</small>
-        <strong>INFILTRATION</strong>
-        <p>Reach the enemy compound</p>
+
+        <strong>
+          INFILTRATION
+        </strong>
+
+        <p>
+          Reach the enemy compound
+        </p>
       </div>
 
       <div className="crosshair">
@@ -22,7 +30,9 @@ export default function HUD({ health }: HUDProps) {
       <div className="weapon">
         <div>
           <small>VX-45</small>
+
           <strong>30</strong>
+
           <span> / 120</span>
         </div>
 
@@ -40,7 +50,7 @@ export default function HUD({ health }: HUDProps) {
           <div
             style={{
               width: `${health}%`,
-              background:
+              backgroundColor:
                 health > 50
                   ? "#00ff88"
                   : health > 25
@@ -50,24 +60,42 @@ export default function HUD({ health }: HUDProps) {
           />
         </div>
 
-        <strong>{health}</strong>
+        <strong>
+          {health}
+        </strong>
       </div>
+
+      {health <= 0 && (
+        <div className="game-over">
+          <h1>MISSION FAILED</h1>
+          <p>PLAYER DOWN</p>
+        </div>
+      )}
 
       <div className="controls">
         <div>
-          <span>W A S D</span> MOVE
+          <span>W A S D</span>{" "}
+          MOVE
         </div>
 
         <div>
-          <span>SHIFT</span> SPRINT
+          <span>SHIFT</span>{" "}
+          SPRINT
         </div>
 
         <div>
-          <span>SPACE</span> JUMP
+          <span>SPACE</span>{" "}
+          JUMP
         </div>
 
         <div>
-          <span>LMB</span> FIRE
+          <span>LMB</span>{" "}
+          FIRE
+        </div>
+
+        <div>
+          <span>H</span>{" "}
+          DAMAGE TEST
         </div>
       </div>
 
