@@ -273,7 +273,7 @@ export default function Player() {
         </mesh>
 
         {/* Barrel */}
-        <mesh
+        {/* <mesh
           position={[0, 0, -0.85]}
         >
           <cylinderGeometry
@@ -294,7 +294,10 @@ export default function Player() {
             color="#111111"
             metalness={1}
           />
-        </mesh>
+        </mesh> */}
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+    <cylinderGeometry args={[1, 1, 2, 32]} />
+</mesh>
       </group>
 
       {/* Player glow */}
